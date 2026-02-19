@@ -9,6 +9,7 @@ const {protect, admin} = require("../middleware/authmiddleware");
 router.get("/profile", protect, getProfile);
 
 //get all users
+// admin
 router.get("/", protect, getAllUsers);
 
 module.exports = router;

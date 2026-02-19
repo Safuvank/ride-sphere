@@ -4,16 +4,21 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes")
-const productRoutes = require("./routes/productRoutes");
+const productRoutes = require("./routes/product.routes");
 const cartRoutes = require("./routes/cart.routes");
-const checkoutRoutes = require("./routes/checkoutRoutes");
-const orderRoutes = require("./routes/orderRoutes");
+const checkoutRoutes = require("./routes/checkout.routes");
+const orderRoutes = require("./routes/order.routes");
 const uploadRoutes = require("./routes/uploadRoutes");
-const wishlistRoutes = require("./routes/wishlistRoutes");
+const wishlistRoutes = require("./routes/wishlist.routers");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175"],
+    credentials: true,
+  })
+);
 
 dotenv.config();
 
@@ -40,3 +45,4 @@ app.use("/api/wishlist", wishlistRoutes);
 app.listen(PORT, () => {
   console.log(`Server is runnning on http://localhost:${PORT}`);
 });
+

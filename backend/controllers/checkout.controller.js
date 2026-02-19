@@ -1,22 +1,29 @@
-const express = require("express");
-const Checkout = require("../models/Checkout");
+const Checkout = require("../models/checkout.model");
 const Cart = require("../models/cart.model");
-const Product = require("../models/product.model");
-const Order = require("../models/order.model");
-const { protect } = require("../middleware/authmiddleware");
 
-const router = express.Router();
+exports.createCheckout = async (req, res) => {
+  const { shippingAddress, paymentMethod } = req.body;
 
-// route Post /api/checkout
-// create a new checkout session
-// access private
+  try {
+    const cart = await Cart.findOne({ user: req.user._id });
 
-router.post("/", protect, async (req, res) => {
-  const { checkoutItems, shippingAddress, paymentMethod, totalPrice } =
-    req.body;
-  if (!checkoutItems || checkoutItems.length === 0) {
-    return res.status(400).json({ message: "no items in checkout" });
-  }
+    if (!cart || cart.products.length === 0) {
+      return res.status(400).json({ message: "Cart is empty" });
+    }
+    const checkoutItems = cart.products.map((item) => ({
+      productId: item.productId,
+      name: item.name,
+      image: item.image,
+      price: item.price,
+      quantity: item.quantity,
+    }));
+
+    // recalculate total safely
+    const totalPrice = checkoutItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0,
+    );
+  } catch (error) {}
 
   try {
     //create a new checkout session
@@ -35,13 +42,10 @@ router.post("/", protect, async (req, res) => {
     console.error("Error Creating checkout session:", error);
     res.status(500).json({ message: "Server Error" });
   }
-});
+};
 
-// PUT /api/checkout/:id/pay
-// update checkout to mark as paid after successful payment
-// access private
 
-router.put("/:id/pay", protect, async (req, res) => {
+exports.markCheckoutAsPaid = async (req, res) => {
   const { paymentStatus, paymentDetails } = req.body;
 
   try {
@@ -65,13 +69,10 @@ router.put("/:id/pay", protect, async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "server error" });
   }
-});
+}
 
-// route POST /api/checkout/:id/finalize
-// finalize checkout and convert to and order after payment configuration
-// access private
 
-router.post("/:id/finalize", protect, async (req, res) => {
+exports.finalizeCheckout = async (req, res) => {
   try {
     const checkout = await Checkout.findById(req.params.id);
     if (!checkout) {
@@ -83,7 +84,8 @@ router.post("/:id/finalize", protect, async (req, res) => {
         user: checkout.user,
         orderItems: checkout.checkoutItems,
         shippingAddress: checkout.shippingAddress,
-        paymentMethod: checkout.totalPrice,
+        paymentMethod: checkout.paymentMethod,
+        totalPrice: checkout.totalPrice,
         isPaid: true,
         paidAt: checkout.paidAt,
         isDelivered: false,
@@ -106,6 +108,4 @@ router.post("/:id/finalize", protect, async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "server error" });
   }
-});
-
-module.exports = router;
+}

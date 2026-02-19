@@ -13,7 +13,7 @@ export default function Navbar() {
     state: { cart, wishlist },
   } = useContext(cartContext);
 
-  const { user, logout } = useContext(AuthContext); // user and logout
+  const { user, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
     logout();

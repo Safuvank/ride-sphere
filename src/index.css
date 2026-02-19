@@ -1,1 +1,60 @@
 @import "tailwindcss";
+
+
+:root {
+  --toastify-color-success: #00c853;
+  --toastify-color-error: #ff5252;
+  --toastify-color-info: #2196f3;
+  --toastify-color-warning: #ffab00;
+}
+
+/* The Glassmorphism Container */
+.custom-toast {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15) !important;
+  padding: 16px !important;
+  color: #1a1a1a !important;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* Custom indicator on the left instead of a progress bar */
+.custom-toast::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15%;
+  height: 70%;
+  width: 4px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Color coding for the side indicator */
+.Toastify__toast--success.custom-toast::before { background-color: var(--toastify-color-success); }
+.Toastify__toast--error.custom-toast::before { background-color: var(--toastify-color-error); }
+.Toastify__toast--info.custom-toast::before { background-color: var(--toastify-color-info); }
+
+/* Stylish close button */
+.Toastify__close-button {
+  color: #1a1a1a;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.Toastify__close-button:hover {
+  opacity: 1;
+}
+
+/* Smooth enter/exit animation override */
+.Toastify__bounce-enter--bottom-right {
+  animation-name: custom-slide-in;
+}
+
+@keyframes custom-slide-in {
+  from { transform: translateX(100%) scale(0.9); opacity: 0; }
+  to { transform: translateX(0) scale(1); opacity: 1; }
+}

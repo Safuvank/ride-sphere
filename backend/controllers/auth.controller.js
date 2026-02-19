@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const {generateAccessToken, generateRefreshToken} = require("../services/token.service")
 
 exports.register = async (req, res) => {
   try {
@@ -31,6 +32,44 @@ exports.register = async (req, res) => {
   }
 };
 
+// exports.login = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       return res.status(400).json({ message: "Invalid username or password" });
+//     }
+
+//     const isMatch = await bcrypt.compare(password, user.password);
+//     if (!isMatch) {
+//       return res.status(400).json({ message: "Invalid username or password" });
+//     }
+
+//     const accessToken = generateAccessToken(user);
+//     const refreshToken = generateRefreshToken(user);
+
+
+//     // save refresh token in DB 
+
+//     user.refreshToken = refreshToken;
+
+//     await user.save()
+
+//     res.json({
+//         message: "Login successful",
+//         accessToken,
+//         refreshToken
+//     })
+//   } catch (err) {
+//     console.error(err)
+//     res.status(500).json({message: "server error"})
+//   }
+// };
+
+
+
+
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -45,20 +84,34 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid username or password" });
     }
 
-    const token = jwt.sign(
-      {
-        id: user._id,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" },
-    );
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    // Save refresh token in DB
+    user.refreshToken = refreshToken;
+    await user.save();
+
+    // ✅ Send refresh token as HTTP-only cookie
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: false, // true in production (HTTPS)
+      sameSite: "Lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
 
     res.json({
-        message: "Login successful",
-        token
-    })
+      message: "Login successful",
+      accessToken, // only send access token in JSON
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+
   } catch (err) {
-    console.error(err)
-    res.status(500).json({message: "server error"})
+    console.error(err);
+    res.status(500).json({ message: "server error" });
   }
 };

@@ -4,7 +4,7 @@ const checkoutItemSchema = new mongoose.Schema(
   {
     productId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "product",
+      ref: "Product",
       required: true,
     },
     name: {
@@ -16,6 +16,10 @@ const checkoutItemSchema = new mongoose.Schema(
       required: true,
     },
     price: {
+      type: Number,
+      required: true,
+    },
+    quantity: {
       type: Number,
       required: true,
     },
@@ -65,10 +69,6 @@ const checkoutSchema = new mongoose.Schema(
     },
     finalizedAt: {
       type: Date,
-    },
-    quantity: {
-      type: Number,
-      required: true,
     },
   },
   { timestamps: true },

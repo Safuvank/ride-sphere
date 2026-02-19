@@ -1,4 +1,5 @@
 const Product = require("../models/product.model")
+const APIFeatures = require("../utils/apiFeatures");
 
 
 exports.createProduct = async (req, res) => {
@@ -92,53 +93,33 @@ exports.deleteProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
   try {
-    const { search, category, sort, page = 1, limit = 8 } = req.query;
+    const resultPerPage = Number(req.query.limit) || 8;
 
-    let query = {};
+    const apiFeatures = new APIFeatures(
+      Product.find(),
+      req.query
+    )
+      .search()
+      .filter()
+      .sort()
+      .paginate(resultPerPage);
 
-    // search
-    if (search) {
-      query.$or = [
-        {name : {$regex : search, $options: "i"}},
-        {description: {$regex: search , $options: "i"}}
-      ]
-    }
+    const products = await apiFeatures.query;
 
-    // category
+    const total = await Product.countDocuments();
 
-  if(category && category !== "All"){
-    query.category = category;
-  }
-
-  // sorting
-
-  let sortOption = {};
-  if(sort === "price-low-high") sortOption = {price : 1};
-  if(sort === "price-high-low") sortOption = {price : -1};
-  if(sort === "name-az") sortOption = {name: 1};
-  if(sort === "name-za") sortOption = {name: -1};
-
-  const skip = (page - 1) * limit;
-
-  const total = await Product.countDocuments(query);
-
-  // Fetch products and apply sorting and limit
-  const products = await Product.find(query)
-  .sort(sortOption)
-  .skip(skip)
-  .limit(Number(limit));
-
-  res.json({
-    products,
-    totalPages: Math.ceil(total/ limit),
-    currentPage: Number(page)
-  })
+    res.json({
+      success: true,
+      products,
+      totalPages: Math.ceil(total / resultPerPage),
+      currentPage: Number(req.query.page) || 1,
+    });
 
   } catch (error) {
-    console.log(error)
-    res.status(500).send("server error")
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
-}
+};
 
 
 exports.getProductsById = async (req,res)=>{
