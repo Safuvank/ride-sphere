@@ -115,3 +115,21 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "server error" });
   }
 };
+
+exports.refreshToken = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) return res.status(401).json({ message: "No refresh token" });
+
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user) return res.status(401).json({ message: "User not found" });
+
+    const accessToken = generateAccessToken(user);
+    res.json({ accessToken });
+  } catch (error) {
+    console.error("RefreshToken Error:", error);
+    res.status(403).json({ message: "Invalid refresh token" });
+  }
+};

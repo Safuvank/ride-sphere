@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser"); // Added
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth.routes");
@@ -13,6 +14,7 @@ const wishlistRoutes = require("./routes/wishlist.routers");
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser()); // Added
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:5175"],
