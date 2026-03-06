@@ -14,11 +14,11 @@ import Payment from "../Pages/Authantication/Non Authantication/Payment/Payment"
 import OrderSuccess from "../Pages/Authantication/Non Authantication/Payment/OrderSuccess";
 import OrderHistory from "../Pages/Authantication/Non Authantication/Payment/OrderHistory";
 import ErrorResponse from "../Pages/Authantication/Non Authantication/404/ErrorResponse";
-import AdminLayout from "../Admin/AdminLayout";
-import Overview from "../Admin/Overview";
-import Users from "../Admin/Users";
-import ManageOrders from "../Admin/ManageOrders";
-import Products from "../Admin/Products";
+import AdminLayout from "../Admin/components/AdminLayout";
+import Dashboard from "../Admin/pages/Dashboard";
+import Users from "../Admin/pages/Users";
+import Orders from "../Admin/pages/Orders";
+import Products from "../Admin/pages/Products";
 
 export default function AppRoutes() {
   return (
@@ -75,17 +75,17 @@ export default function AppRoutes() {
 
       {/* Admin */}
       <Route
-        path="/admin"
+        path="/admin/*"
         element={
           <AdminRoute>
             <AdminLayout />
           </AdminRoute>
         }
       >
-        <Route index element={<Navigate to="/admin/overview" />} />
-        <Route path="overview" element={<Overview />} />
+        <Route index element={<Navigate to="/admin/dashboard" />} />
+        <Route path="dashboard" element={<Dashboard />} />
         <Route path="users" element={<Users />} />
-        <Route path="manageorders" element={<ManageOrders />} />
+        <Route path="orders" element={<Orders />} />
         <Route path="products" element={<Products />} />
       </Route>
 

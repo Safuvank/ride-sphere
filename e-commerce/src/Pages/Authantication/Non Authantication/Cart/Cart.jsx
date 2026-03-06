@@ -34,7 +34,7 @@ export default function Cart() {
   const handleIncrease = async (productId) => {
     try {
       const currentItem = cart.find(
-        (item) => item._id === productId,
+        (item) => item.productId._id === productId
       );
       if (!currentItem) return;
 
@@ -46,34 +46,67 @@ export default function Cart() {
       });
 
       dispatch({ type: "SetCart", payload: res.data.products });
+      console.log(res.data.products)
     } catch (error) {
       console.error(error);
     }
   };
 
+  // const handleDecrease = async (productId) => {
+  //   try {
+  //     const currentItem = cart.find((item) => item.productId._id === productId);
+  //     if (!currentItem) return;
+
+  //     const newQuantity = currentItem.quantity - 1;
+
+  //     if (newQuantity <= 0) {
+  //       const res = await api.delete("/cart", {
+  //         data: { productId },
+  //       });
+  //       dispatch({ type: "SetCart", payload: res.data.products });
+  //     } else {
+  //       const res = await api.put("/cart", {
+  //         productId,
+  //         quantity: newQuantity,
+  //       });
+  //       dispatch({ type: "SetCart", payload: res.data.products });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error decreasing quantity", error);
+  //   }
+  // };
+
+
   const handleDecrease = async (productId) => {
-    try {
-      const currentItem = cart.find((item) => item.productId.toString() === productId.toString());
-      if (!currentItem) return;
+  try {
+    const currentItem = cart.find(
+      (item) => item.productId?._id === productId
+    );
 
-      const newQuantity = currentItem.quantity - 1;
+    if (!currentItem) return;
 
-      if (newQuantity <= 0) {
-        const res = await api.delete("/cart", {
-          data: { productId },
-        });
-        dispatch({ type: "SetCart", payload: res.data.products });
-      } else {
-        const res = await api.put("/cart", {
-          productId,
-          quantity: newQuantity,
-        });
-        dispatch({ type: "SetCart", payload: res.data.products });
-      }
-    } catch (error) {
-      console.error("Error decreasing quantity", error);
+    const newQuantity = currentItem.quantity - 1;
+
+    if (newQuantity <= 0) {
+      const res = await api.delete("/cart", {
+        data: { productId },
+      });
+
+      dispatch({ type: "SetCart", payload: res.data.products });
+      return;
     }
-  };
+
+    const res = await api.put("/cart", {
+      productId,
+      quantity: newQuantity,
+    });
+
+    dispatch({ type: "SetCart", payload: res.data.products });
+
+  } catch (error) {
+    console.error("Error decreasing quantity", error.response?.data);
+  }
+};
 
   const handleRemove = async (productId) => {
     if (window.confirm("Are you sure you want to remove this item?")) {
@@ -165,7 +198,7 @@ export default function Cart() {
               <div className="flex-1 flex flex-col gap-6">
                 {cart.map((item) => (
                   <div
-                    key={item._id}
+                    key={item.productId._id}
                     className="group flex flex-col md:flex-row items-center bg-zinc-900 border border-zinc-800 p-6 relative transition-all duration-300 hover:border-lime-500/50 hover:shadow-lg hover:shadow-lime-500/10"
                   >
                     {/* Corner Accent */}
@@ -209,7 +242,7 @@ export default function Cart() {
                         <button
                           className="px-3 py-2 text-lime-500 hover:text-black hover:bg-lime-500 transition-colors disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-lime-500"
                           onClick={() => handleIncrease(item.productId._id)}
-                          disabled={item.quantity >= item.countInStock}
+                          disabled={item.quantity >= item.productId.countInStock}
                         >
                           <FaPlus size={10} className="transform skew-x-12" />
                         </button>

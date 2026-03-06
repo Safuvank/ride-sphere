@@ -25,19 +25,39 @@ export default function Wishlist() {
     }
   };
 
-  const handleAddToCart = async (product) => {
-    try {
-      const res = await api.post("/cart", {
-        productId: product._id,
-        quantity: 1,
-      });
+  // const handleAddToCart = async (product) => {
+  //   try {
+  //     const res = await api.post("/cart", {
+  //       productId: product._id,
+  //       quantity: 1,
+  //     });
 
-      // Optionally remove from wishlist
-      await api.delete(`/wishlist/${product._id}`);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     // Optionally remove from wishlist
+  //     await api.delete(`/wishlist/${product._id}`);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+
+  const handleAddToCart = async (product) => {
+  try {
+    await api.post("/cart", {
+      productId: product._id,
+      quantity: 1,
+    });
+
+    await api.delete(`/wishlist/${product._id}`);
+
+    dispatch({
+      type: "SetWishlist",
+      payload: wishlist.filter((item) => item.product._id !== product._id),
+    });
+
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   if (!user) {
     return (
@@ -151,7 +171,7 @@ export default function Wishlist() {
                   <div className="flex items-center gap-4 mt-6 md:mt-0 w-full md:w-auto justify-center">
                     <button
                       className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-lime-500 text-zinc-950 font-black italic uppercase tracking-wider text-sm hover:bg-white hover:scale-105 transition-all duration-300 transform -skew-x-12"
-                      onClick={() => handleAddToCart(product)}
+                      onClick={() => handleAddToCart(product.product)}
                     >
                       <span className="transform skew-x-12 flex items-center gap-2">
                         <FaShoppingCart /> Add

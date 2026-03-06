@@ -22,7 +22,7 @@ exports.createProduct = async (req, res) => {
       category,
       brand,
       images,
-      user: req.user._id, // Reference to the admin user who created it
+      user: req.user._id, //who created it
     });
 
     const createdProduct = await product.save();
@@ -45,7 +45,7 @@ exports.updateProduct = async (req, res) => {
       images,
     } = req.body;
 
-    //find product by ID
+    
 
     const product = await Product.findById(req.params.id);
 
@@ -59,7 +59,6 @@ exports.updateProduct = async (req, res) => {
       product.brand = brand || product.brand;
       product.images = images || product.images;
 
-      // Save the updated product
 
       const updatedProduct = await product.save();
       res.json(updatedProduct);
@@ -74,7 +73,7 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   try {
-    // find the product by Id
+  
     const product = await Product.findById(req.params.id);
 
     if (product) {

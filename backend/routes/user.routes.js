@@ -12,4 +12,5 @@ router.get("/profile", protect, getProfile);
 // admin
 router.get("/", protect, getAllUsers);
 
+
 module.exports = router;

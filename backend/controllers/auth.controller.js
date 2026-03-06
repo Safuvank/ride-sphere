@@ -72,8 +72,10 @@ exports.login = async (req, res) => {
           _id: user._id,
           name: user.name,
           email: user.email,
+          role: user.role
         },
       });
+      
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "server error" });
@@ -123,3 +125,5 @@ exports.refreshToken = async (req, res) => {
     res.status(403).json({ message: "Invalid refresh token" });
   }
 };
+
+

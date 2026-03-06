@@ -2,8 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/api.js";
 import { AuthContext } from "./AuthContext.jsx";
-import { FaFlagCheckered } from "react-icons/fa"; 
-
+import { FaFlagCheckered } from "react-icons/fa";
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
@@ -30,14 +29,16 @@ export default function Login() {
       console.log("Full login response:", data);
 
       const userData = data.user;
-      
-     
+
       localStorage.setItem("accessToken", data.accessToken);
 
       login(userData);
+      if (userData.role == "admin") {
+        navigate("/admin/dashboard/");
+      } else {
+        navigate("/");
+      }
       console.log("Login userData:", userData);
-
-      navigate("/");
     } catch (err) {
       console.error("Login error:", err);
       setError(err.response?.data?.message || "Login failed");

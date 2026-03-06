@@ -1,14 +1,17 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect  } from "react";
 import api from "../../api/api";
+
+
+
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
-    const stored = localStorage.getItem("auth");
+    const stored = localStorage.getItem("user");
     try {
       const parsedUser = JSON.parse(stored);
       if (parsedUser) {
@@ -16,7 +19,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Invalid auth data. Clearing storage...");
-      localStorage.removeItem("auth");
+      localStorage.removeItem("user");
     }
 
     setLoading(false);
@@ -25,8 +28,12 @@ export const AuthProvider = ({ children }) => {
   const login = (userData) => {
     if (!userData) return;
 
-    localStorage.setItem("auth", JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userData));
+    const temp = localStorage.getItem("user"
+    )
+    console.log("this is temp",temp)
     setUser(userData);
+    
   };
 
   const signup = async (userData) => {
