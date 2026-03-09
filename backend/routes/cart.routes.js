@@ -33,4 +33,8 @@ router.put("/", protect, updateCartItem);
 
 router.delete("/", protect, removeFromCart);
 
+
+// to get total price from cart
+// router.get("/total", protect, getCartTotal)
+
 module.exports = router;

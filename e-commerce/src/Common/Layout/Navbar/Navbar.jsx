@@ -265,7 +265,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const {
-    state: { cart, wishlist },
+    state: { cart, wishlist,totalItems },
   } = useContext(cartContext);
 
   const { user, logout } = useContext(AuthContext);
@@ -277,7 +277,7 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  // const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     // THEME: Dark background with a "Volt Green" bottom border strip

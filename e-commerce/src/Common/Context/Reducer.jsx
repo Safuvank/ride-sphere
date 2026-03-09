@@ -3,7 +3,9 @@ export default function reducer(state, action) {
     case "SetCart":
       return {
         ...state,
-        cart: action.payload,
+        cart: action.payload.products,
+        totalPrice: action.payload.totalPrice,
+        totalItems: action.payload.totalItems
       };
 
     case "SetWishlist":

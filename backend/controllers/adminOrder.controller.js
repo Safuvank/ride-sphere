@@ -2,14 +2,15 @@ const Order = require("../models/order.model");
 
 exports.getOrders = async (req, res) => {
   try {
-    const orders = await Order.find({}).populate("user", "name email");
+    const orders = await Order.find({})
+      .populate("user", "name email")
+      .sort({ createdAt: -1 });
     res.json(orders);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
-}
-
+};
 
 exports.updateOrderStatus = async (req, res) => {
   try {
@@ -30,8 +31,7 @@ exports.updateOrderStatus = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
-}
-
+};
 
 exports.deleteOrder = async (req, res) => {
   try {
@@ -40,10 +40,10 @@ exports.deleteOrder = async (req, res) => {
       await order.deleteOne();
       res.json({ message: "Order removed" });
     } else {
-        res.status(404).json({message: "order not found"})
+      res.status(404).json({ message: "order not found" });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({message: "Server error"})
+    res.status(500).json({ message: "Server error" });
   }
-}
+};

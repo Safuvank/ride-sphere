@@ -40,19 +40,19 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
-  useEffect(() => {
-    const tryRefresh = async () => {
-      try {
-        const { data } = await api.post("/auth/refresh");
-        localStorage.setItem("accessToken", data.accessToken);
-      } catch {
-        localStorage.removeItem("auth");
-        localStorage.removeItem("accessToken");
-      }
-    };
+  // useEffect(() => {
+  //   const tryRefresh = async () => {
+  //     try {
+  //       const { data } = await api.post("/auth/refresh");
+  //       localStorage.setItem("accessToken", data.accessToken);
+  //     } catch {
+  //       localStorage.removeItem("auth");
+  //       localStorage.removeItem("accessToken");
+  //     }
+  //   };
 
-    tryRefresh();
-  }, []);
+  //   tryRefresh();
+  // }, []);
 
   const logout = async () => {
     try {
