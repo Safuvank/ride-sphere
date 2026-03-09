@@ -25,7 +25,6 @@ export default function ProductDetails() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  
   useEffect(() => {
     api
       .get(`/products/${id}`)
@@ -37,7 +36,6 @@ export default function ProductDetails() {
       });
   }, [id]);
 
-  
   if (error) {
     return (
       <div className="min-h-screen flex justify-center items-center bg-zinc-950 text-red-500 font-black italic uppercase text-xl tracking-widest">
@@ -58,45 +56,31 @@ export default function ProductDetails() {
 
   // Find this product in the cart (only after product is loaded)
   // const cartItem = cart.find((item) => item._id === product._id);
-  const cartItem = cart.find(
-  (item) => item.productId === product._id
-);
+  //   const cartItem = cart.find(
+  //   (item) => item.productId === product._id
+  // );
+  const cartItem = cart.find((item) => item.productId?._id === product._id);
+
   const cartQuantity = cartItem ? cartItem.quantity : 0;
   const inCart = !!cartItem;
 
-  
-  // const handleAddToCart = () => {
-  //   if (!user) {
-  //     navigate("/login");
-  //     return;
-  //   }
-
-  //   if (inCart) {
-  //     alert("Product is already in your cart!");
-  //   } else {
-  //     dispatch({ type: "AddToCart", payload: { ...product, quantity: 1 } });
-  //     alert("Added to cart successfully!");
-  //   }
-  // };
-
   const handleAddToCart = async () => {
-  if (!user) {
-    navigate("/login");
-    return;
-  }
+    if (!user) {
+      navigate("/login");
+      return;
+    }
 
-  try {
-    const res = await api.post("/cart", {
-      productId: product._id,
-      quantity: 1,
-    });
+    try {
+      const res = await api.post("/cart", {
+        productId: product._id,
+        quantity: 1,
+      });
 
-    dispatch({ type: "SetCart", payload: res.data.products });
-
-  } catch (error) {
-    console.error("Error adding to cart:", error);
-  }
-};
+      dispatch({ type: "SetCart", payload: res.data.products });
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
 
   // // ✅ Quantity controls (safe and stock-limited)
   // const handleIncrease = (id) => {
@@ -108,20 +92,19 @@ export default function ProductDetails() {
   // };
 
   const handleIncrease = async () => {
-  try {
-    const newQuantity = cartQuantity + 1;
+    try {
+      const newQuantity = cartQuantity + 1;
 
-    const res = await api.put("/cart", {
-      productId: product._id,
-      quantity: newQuantity,
-    });
+      const res = await api.put("/cart", {
+        productId: product._id,
+        quantity: newQuantity,
+      });
 
-    dispatch({ type: "SetCart", payload: res.data.products });
-
-  } catch (error) {
-    console.error(error);
-  }
-};
+      dispatch({ type: "SetCart", payload: res.data.products });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // const handleDecrease = () => {
   //   if (cartQuantity > 1) {
@@ -133,28 +116,27 @@ export default function ProductDetails() {
   // };
 
   const handleDecrease = async () => {
-  try {
-    const newQuantity = cartQuantity - 1;
+    try {
+      const newQuantity = cartQuantity - 1;
 
-    if (newQuantity <= 0) {
-      const res = await api.delete("/cart", {
-        data: { productId: product._id },
-      });
+      if (newQuantity <= 0) {
+        const res = await api.delete("/cart", {
+          data: { productId: product._id },
+        });
 
-      dispatch({ type: "SetCart", payload: res.data.products });
-    } else {
-      const res = await api.put("/cart", {
-        productId: product._id,
-        quantity: newQuantity,
-      });
+        dispatch({ type: "SetCart", payload: res.data.products });
+      } else {
+        const res = await api.put("/cart", {
+          productId: product._id,
+          quantity: newQuantity,
+        });
 
-      dispatch({ type: "SetCart", payload: res.data.products });
+        dispatch({ type: "SetCart", payload: res.data.products });
+      }
+    } catch (error) {
+      console.error(error);
     }
-
-  } catch (error) {
-    console.error(error);
-  }
-};
+  };
 
   return (
     <div className="pt-32 pb-20 px-[5%] bg-zinc-950 min-h-screen text-white relative overflow-hidden">

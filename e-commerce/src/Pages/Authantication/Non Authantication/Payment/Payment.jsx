@@ -34,6 +34,77 @@ export default function Payment() {
     0,
   );
 
+//   const handlePlaceOrder = async () => {
+//   if (!address.trim()) return alert("Enter address");
+
+//   try {
+//     // Step 1: Create Razorpay order
+//     const { data } = await api.post("/payment/create-order", {
+//       amount: total,
+//     });
+
+//     const order = data.order;
+
+//     const options = {
+//       key: "rzp_test_xxxxx", // your razorpay key
+//       amount: order.amount,
+//       currency: "INR",
+//       name: "RideSphere Store",
+//       description: "Order Payment",
+//       order_id: order.id,
+
+//       handler: async function (response) {
+//         try {
+//           // Step 2: Verify Payment
+//           await api.post("/payment/verify", response);
+
+//           // Step 3: Save order in DB
+//           await api.post("/orders", {
+//             orderItems: cart.map((item) => ({
+//               productId: item.productId._id,
+//               name: item.productId.name,
+//               image: item.productId.images[0]?.url,
+//               quantity: item.quantity,
+//               price: item.productId.price,
+//             })),
+//             shippingAddress: {
+//               address,
+//               city: "Your City",
+//               postalCode: "673001",
+//               country: "India",
+//             },
+//             paymentMethod: "razorpay",
+//             totalPrice: total,
+//             razorpayPaymentId: response.razorpay_payment_id,
+//           });
+
+//           dispatch({ type: "ClearCart" });
+
+//           navigate("/ordersuccess", { state: { success: true } });
+//         } catch (error) {
+//           console.error(error);
+//           alert("Payment verification failed");
+//         }
+//       },
+
+//       prefill: {
+//         name: user?.name,
+//         email: user?.email,
+//       },
+
+//       theme: {
+//         color: "#84cc16",
+//       },
+//     };
+
+//     const rzp = new window.Razorpay(options);
+//     rzp.open();
+//   } catch (error) {
+//     console.error(error);
+//     alert("Payment failed");
+//   }
+// };
+
   const handlePlaceOrder = async () => {
     if (!address.trim()) return alert("Enter address");
 

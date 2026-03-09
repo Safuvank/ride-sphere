@@ -135,9 +135,9 @@ export default function Wishlist() {
             </div>
 
             <div className="flex flex-col gap-6">
-              {wishlist.map((product) => (
+              {wishlist?.filter(Boolean).map((product) => (
                 <div
-                  key={product.product._id}
+                  key={product._id}
                   className="group flex flex-col md:flex-row items-center justify-between bg-zinc-900 border border-zinc-800 p-6 relative transition-all duration-300 hover:border-lime-500/50 hover:shadow-lg hover:shadow-lime-500/10 hover:-translate-y-1"
                 >
                   {/* Corner Accent */}
@@ -147,8 +147,8 @@ export default function Wishlist() {
                     {/* Image Container */}
                     <div className="w-32 h-32 bg-white border border-zinc-800 p-2 flex-shrink-0 transform -skew-x-6">
                       <img
-                        src={product.product.images?.[0]?.url}
-                        alt={product.product.name}
+                        src={product.images?.[0]?.url}
+                        alt={product.name}
                         className="w-full h-full object-contain transform skew-x-6 filter brightness-90 group-hover:brightness-110 transition-all"
                       />
                     </div>
@@ -156,13 +156,13 @@ export default function Wishlist() {
                     {/* Text Info */}
                     <div className="text-center md:text-left">
                       <p className="text-xs font-bold text-lime-500 uppercase tracking-widest mb-1">
-                        {product.product.brand}
+                        {product.brand}
                       </p>
                       <h3 className="text-xl font-black italic uppercase text-white tracking-tight mb-2">
-                        {product.product.name}
+                        {product.name}
                       </h3>
                       <p className="text-2xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-400">
-                        ₹{product.product.price.toLocaleString("en-IN")}
+                        ₹{product.price.toLocaleString("en-IN")}
                       </p>
                     </div>
                   </div>
@@ -171,7 +171,7 @@ export default function Wishlist() {
                   <div className="flex items-center gap-4 mt-6 md:mt-0 w-full md:w-auto justify-center">
                     <button
                       className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-lime-500 text-zinc-950 font-black italic uppercase tracking-wider text-sm hover:bg-white hover:scale-105 transition-all duration-300 transform -skew-x-12"
-                      onClick={() => handleAddToCart(product.product)}
+                      onClick={() => handleAddToCart(product)}
                     >
                       <span className="transform skew-x-12 flex items-center gap-2">
                         <FaShoppingCart /> Add

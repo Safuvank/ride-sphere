@@ -15,27 +15,27 @@ import {
 
 export default function Cart() {
   const {
-    state: { cart },
+    state: { cart, totalPrice, totalItems },
     dispatch,
-    loadingCart
+    loadingCart,
   } = useContext(cartContext);
+
+  console.log("usecontext",useContext(cartContext));
 
   console.log(cart);
 
   const { user } = useContext(AuthContext);
 
-  const totalPrice = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0,
-  );
+  // const totalPrice = cart.reduce(
+  //   (total, item) => total + item.price * item.quantity,
+  //   0,
+  // );
 
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  // const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleIncrease = async (productId) => {
     try {
-      const currentItem = cart.find(
-        (item) => item.productId._id === productId
-      );
+      const currentItem = cart.find((item) => item.productId._id === productId);
       if (!currentItem) return;
 
       const newQuantity = currentItem.quantity + 1;
@@ -45,68 +45,43 @@ export default function Cart() {
         quantity: newQuantity,
       });
 
-      dispatch({ type: "SetCart", payload: res.data.products });
-      console.log(res.data.products)
+      dispatch({ type: "SetCart", payload: res.data });
+      console.log(res.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // const handleDecrease = async (productId) => {
-  //   try {
-  //     const currentItem = cart.find((item) => item.productId._id === productId);
-  //     if (!currentItem) return;
-
-  //     const newQuantity = currentItem.quantity - 1;
-
-  //     if (newQuantity <= 0) {
-  //       const res = await api.delete("/cart", {
-  //         data: { productId },
-  //       });
-  //       dispatch({ type: "SetCart", payload: res.data.products });
-  //     } else {
-  //       const res = await api.put("/cart", {
-  //         productId,
-  //         quantity: newQuantity,
-  //       });
-  //       dispatch({ type: "SetCart", payload: res.data.products });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error decreasing quantity", error);
-  //   }
-  // };
-
 
   const handleDecrease = async (productId) => {
-  try {
-    const currentItem = cart.find(
-      (item) => item.productId?._id === productId
-    );
+    try {
+      const currentItem = cart.find(
+        (item) => item.productId?._id === productId,
+      );
 
-    if (!currentItem) return;
+      if (!currentItem) return;
 
-    const newQuantity = currentItem.quantity - 1;
+      const newQuantity = currentItem.quantity - 1;
 
-    if (newQuantity <= 0) {
-      const res = await api.delete("/cart", {
-        data: { productId },
+      if (newQuantity <= 0) {
+        const res = await api.delete("/cart", {
+          data: { productId },
+        });
+
+        dispatch({ type: "SetCart", payload: res.data });
+        return;
+      }
+
+      const res = await api.put("/cart", {
+        productId,
+        quantity: newQuantity,
       });
 
-      dispatch({ type: "SetCart", payload: res.data.products });
-      return;
+      dispatch({ type: "SetCart", payload: res.data });
+    } catch (error) {
+      console.error("Error decreasing quantity", error.response?.data);
     }
-
-    const res = await api.put("/cart", {
-      productId,
-      quantity: newQuantity,
-    });
-
-    dispatch({ type: "SetCart", payload: res.data.products });
-
-  } catch (error) {
-    console.error("Error decreasing quantity", error.response?.data);
-  }
-};
+  };
 
   const handleRemove = async (productId) => {
     if (window.confirm("Are you sure you want to remove this item?")) {
@@ -114,12 +89,18 @@ export default function Cart() {
         const res = await api.delete("/cart", {
           data: { productId },
         });
-        dispatch({ type: "SetCart", payload: res.data.products });
+        dispatch({ type: "SetCart", payload: res.data });
       } catch (error) {
         console.error(error);
       }
     }
   };
+
+  console.log({
+  cart,
+  totalItems,
+  totalPrice
+});
 
   // Not Logged In State
   if (!user) {
@@ -163,7 +144,7 @@ export default function Cart() {
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
-        {cart.length === 0 ? (
+        {totalItems === 0 ? (
           <div className="flex flex-col items-center justify-center h-[60vh] text-center">
             <div className="mb-6 p-6 bg-zinc-900 rounded-full border border-zinc-800">
               <FaShoppingCart className="text-zinc-700 text-6xl" />
@@ -196,7 +177,7 @@ export default function Cart() {
             <div className="flex flex-col lg:flex-row gap-12">
               {/* Cart Items List */}
               <div className="flex-1 flex flex-col gap-6">
-                {cart.map((item) => (
+                {cart?.map((item) => (
                   <div
                     key={item.productId._id}
                     className="group flex flex-col md:flex-row items-center bg-zinc-900 border border-zinc-800 p-6 relative transition-all duration-300 hover:border-lime-500/50 hover:shadow-lg hover:shadow-lime-500/10"
@@ -222,7 +203,7 @@ export default function Cart() {
                         {item.productId?.name}
                       </h3>
                       <p className="text-xl font-black italic text-zinc-400">
-                        ₹{item.price.toLocaleString("en-IN")}
+                        ₹{item.productId?.price?.toLocaleString("en-IN")}
                       </p>
                     </div>
 
@@ -242,7 +223,9 @@ export default function Cart() {
                         <button
                           className="px-3 py-2 text-lime-500 hover:text-black hover:bg-lime-500 transition-colors disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-lime-500"
                           onClick={() => handleIncrease(item.productId._id)}
-                          disabled={item.quantity >= item.productId.countInStock}
+                          disabled={
+                            item.quantity >= item.productId.countInStock
+                          }
                         >
                           <FaPlus size={10} className="transform skew-x-12" />
                         </button>
@@ -278,7 +261,7 @@ export default function Cart() {
                       Total Price
                     </span>
                     <span className="text-3xl font-black italic text-lime-500">
-                      ₹{totalPrice.toLocaleString("en-IN")}
+                      ₹{(totalPrice || 0).toLocaleString("en-IN")}
                     </span>
                   </div>
 

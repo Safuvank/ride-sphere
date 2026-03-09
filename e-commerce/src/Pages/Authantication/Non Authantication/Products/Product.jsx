@@ -12,7 +12,7 @@ export default function Product() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sortOption, setSortOption] = useState("");
-  const [totalPages,setTotalPages] = useState(1)
+  const [totalPages, setTotalPages] = useState(1);
 
   const {
     state: { cart, wishlist },
@@ -35,11 +35,9 @@ export default function Product() {
     "Girls Cycles",
   ];
 
-
-
   // Fetch prodcuts from server
 
- const search = searchParams.get("search") || "";
+  const search = searchParams.get("search") || "";
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -60,7 +58,9 @@ export default function Product() {
         // Safety check for HTML response (Vite fallback)
         const contentType = response.headers["content-type"];
         if (contentType && contentType.includes("text/html")) {
-          throw new Error("Received HTML from API. Backend might be down or URL is incorrect.");
+          throw new Error(
+            "Received HTML from API. Backend might be down or URL is incorrect.",
+          );
         }
 
         const { data } = response;
@@ -70,7 +70,10 @@ export default function Product() {
         setTotalPages(data.totalPages || 1);
       } catch (err) {
         console.error("Error fetching products:", err);
-        setError(err.message || "Failed to load products. Please check your connection.");
+        setError(
+          err.message ||
+            "Failed to load products. Please check your connection.",
+        );
         setProducts([]);
       } finally {
         setLoading(false);
@@ -80,75 +83,66 @@ export default function Product() {
     fetchProducts();
   }, [search, filter, sortOption, currentPage, itemsPerPage]);
 
-
-
-
-
   // Format price (INR)
   const formatPrice = (price) => price.toLocaleString("en-IN");
 
   // Add to Cart handler
+  // const handleAddToCart = async (product) => {
+  //   if (!user) {
+  //     navigate("/login");
+  //     return;
+  //   }
+
+  //   try{
+  //     const res = await api.post("/cart", {
+  //       productId : product._id,
+  //       quantity: 1
+  //     });
+
+  //     dispatch({type: "SetCart", payload: res.data})
+  //   }catch(error){
+  //     console.error("Error adding to cart", error)
+  //   }
+  // };
+
   const handleAddToCart = async (product) => {
     if (!user) {
       navigate("/login");
       return;
     }
 
-    try{
+    try {
       const res = await api.post("/cart", {
-        productId : product._id,
-        quantity: 1
+        productId: product._id,
+        quantity: 1,
       });
 
-      dispatch({type: "SetCart", payload: res.data.products})
-    }catch(error){
-      console.error("Error adding to cart", error)
+      dispatch({ type: "SetCart", payload: res.data });
+    } catch (error) {
+      console.error("Error adding to cart", error);
     }
   };
 
- 
-
-
-  // const handleAddToWishlist = (product) => {
-  //   if (!user) {
-  //     navigate("/login");
-  //     return;
-  //   }
-
-  //   const inWishlist = wishlist.some((item) => item._id === product._id);
-
-  //   if (inWishlist) {
-  //     dispatch({ type: "RemoveFromWishlist", payload: product._id });
-  //     alert("Removed from wishlist!");
-  //   } else {
-  //     dispatch({ type: "AddToWishlist", payload: product });
-  //     alert("Added to wishlist!");
-  //   }
-  // };
-
-
   const handleAddToWishlist = async (product) => {
-  if (!user) {
-    navigate("/login");
-    return;
-  }
+    if (!user) {
+      navigate("/login");
+      return;
+    }
 
-  try {
-    const res = await api.post("/wishlist", {
-      productId: product._id,
-    });
+    try {
+      const res = await api.post("/wishlist", {
+        productId: product._id,
+      });
 
-    dispatch({
-      type: "SetWishlist",
-      payload: res.data.products.map((item) => item.product),
-    });
+      dispatch({
+        type: "SetWishlist",
+        payload: res.data.products.map((item) => item.product),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-  
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
   };
@@ -257,7 +251,9 @@ export default function Product() {
         ) : error ? (
           <div className="text-center py-20 bg-red-900/10 border border-red-900/30 max-w-2xl mx-auto transform -skew-x-12">
             <div className="transform skew-x-12">
-              <p className="text-xl text-red-500 font-black italic uppercase mb-4">{error}</p>
+              <p className="text-xl text-red-500 font-black italic uppercase mb-4">
+                {error}
+              </p>
               <button
                 onClick={() => window.location.reload()}
                 className="px-6 py-2 bg-red-600 text-white font-black uppercase tracking-widest hover:bg-red-700 transition-colors"
@@ -286,9 +282,15 @@ export default function Product() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             {products?.map((product) => {
-              const inCart = (cart || []).some((item) => item.productId === product._id);
+              const inCart = (cart || []).some(
+                (item) => item.productId?._id === product._id,
+              );
+              // const inWishlist = (wishlist || []).some(
+              //   (item) => item.productId?._id === product._id,
+              // );
+
               const inWishlist = (wishlist || []).some(
-                (item) => item.productId === product._id,
+                (item) => item._id === product._id,
               );
 
               return (

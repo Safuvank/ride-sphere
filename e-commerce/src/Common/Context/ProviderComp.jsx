@@ -15,7 +15,11 @@ const initialState = {
   cart: [],
   wishlist: [],
   orders: [],
+  totalPrice: 0,
+  totalItems: 0,
 };
+
+console.log("initialState", initialState);
 
 export const ProviderComp = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -24,7 +28,15 @@ export const ProviderComp = ({ children }) => {
 
   useEffect(() => {
     if (!user) {
-      dispatch({ type: "SetCart", payload: [] });
+      // dispatch({ type: "SetCart", payload: [] });
+      dispatch({
+        type: "SetCart",
+        payload: {
+          products: [],
+          totalItems: 0,
+          totalPrice: 0,
+        },
+      });
       dispatch({ type: "SetWishlist", payload: [] });
       return;
     }
@@ -32,10 +44,14 @@ export const ProviderComp = ({ children }) => {
     const loadUserData = async () => {
       try {
         const cartRes = await api.get("/cart");
-        dispatch({ type: "SetCart", payload: cartRes.data.products });
+        dispatch({ type: "SetCart", payload: cartRes.data });
 
         const wishlistRes = await api.get("/wishlist");
-        dispatch({ type: "SetWishlist", payload: wishlistRes.data.products });
+        // dispatch({ type: "SetWishlist", payload: wishlistRes.data.products });
+        dispatch({
+          type: "SetWishlist",
+          payload: wishlistRes.data.products.map((item) => item.product),
+        });
         setLoadingCart(false);
       } catch (error) {
         console.error("Error loading user data:", error);

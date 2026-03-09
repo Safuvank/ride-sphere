@@ -42,4 +42,5 @@ router.get("/", getProducts);
 
 router.get("/:id", getProductsById);
 
+
 module.exports = router;

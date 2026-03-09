@@ -6,6 +6,7 @@ const {
   addUser,
   editUser,
   deleteUser,
+  toggleBlockUser
 } = require("../controllers/admin.controller");
 
 const router = express.Router();
@@ -32,5 +33,7 @@ router.put("/:id", protect, admin, editUser);
 // private admin
 
 router.delete("/:id", protect, admin, deleteUser);
+
+router.put("/block/:id", protect, admin, toggleBlockUser)
 
 module.exports = router;

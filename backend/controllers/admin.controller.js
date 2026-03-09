@@ -1,15 +1,44 @@
 const express = require("express");
 const User = require("../models/user.model");
 
+
+
 exports.getUsers = async (req, res) => {
   try {
-    const users = await User.find({});
-    res.json(users);
+
+    const page = Number(req.query.page) || 1;
+    const limit = 5;
+
+    const keyword = req.query.keyword
+      ? {
+          $or: [
+            { name: { $regex: req.query.keyword, $options: "i" } },
+            { email: { $regex: req.query.keyword, $options: "i" } }
+          ]
+        }
+      : {};
+
+    const count = await User.countDocuments(keyword);
+
+    const users = await User.find(keyword)
+      .select("-password")
+      .limit(limit)
+      .skip(limit * (page - 1))
+      .sort({ createdAt: -1 });
+
+    res.json({
+      users,
+      page,
+      pages: Math.ceil(count / limit)
+    });
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server Error" });
   }
-}
+};
+
+
 
 
 exports.addUser = async (req, res) => {
@@ -65,5 +94,27 @@ exports.deleteUser = async(req,res)=>{
   }catch(err){
     console.log(err)
     res.status(500).json({message: "Server error"})
+  }
+}
+
+
+exports.toggleBlockUser = async (req,res)=>{
+  try{
+
+    const user = await User.findById(req.params.id)
+
+    if(!user){
+      return res.status(404).json({message:"User not found"})
+    }
+
+    user.blocked = !user.blocked
+
+    const updatedUser = await user.save()
+
+    res.json(updatedUser)
+
+  }catch(err){
+    console.log(err)
+    res.status(500).json({message:"Server error"})
   }
 }
