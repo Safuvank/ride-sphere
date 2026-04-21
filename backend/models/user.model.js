@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      index:true
     },
     email: {
       type: String,
@@ -14,20 +15,24 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       match: [/.+\@.+\..+/, "please enter a valid email"],
+      index: true
     },
     password: {
       type: String,
       required: true,
       minLength: 6,
+      
     },
     role: {
       type: String,
       enum: ["customer", "admin"],
       default: "customer",
+      index: true
     },
     blocked: {
       type: Boolean,
       default: false,
+      index: true
     },
     refreshToken: {
       type: String,
@@ -36,6 +41,8 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+userSchema.index({role: 1,blocked: 1});
+
 // hash password before saving
 userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
@@ -43,12 +50,6 @@ userSchema.pre("save", async function () {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
-
-// userSchema.pre("save", async function (next) {
-//   if (!this.isModified("password")) return next();
-//   this.password = await bcrypt.hash(this.password, 10);
-//   next();
-// });
 
 // match user entered password to Hashed password
 

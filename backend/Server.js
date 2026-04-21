@@ -26,19 +26,6 @@ app.use(
   }),
 );
 
-// app.use(cors({
-//   origin: (origin, callback) => {
-//     if (!origin) return callback(null, true);
-
-//     if (origin.startsWith("http://localhost")) {
-//       return callback(null, true);
-//     }
-
-//     callback(new Error("Not allowed by CORS"));
-//   },
-//   credentials: true,
-// }));
-
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;

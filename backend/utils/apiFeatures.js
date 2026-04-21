@@ -6,15 +6,14 @@ class APIFeatures {
 
   // Search
   search() {
-    if (this.queryString.search) {
+    if(this.queryString.search){
+      const keyword = this.queryString.search;
+
       this.query = this.query.find({
-        $or: [
-          { name: { $regex: this.queryString.search, $options: "i" } },
-          { description: { $regex: this.queryString.search, $options: "i" } },
-        ],
-      });
+        $text: {$search: keyword}
+      })
     }
-    return this;
+    return this
   }
 
   // Category filter
