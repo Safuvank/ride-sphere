@@ -25,8 +25,6 @@ export default function Navbar() {
     <nav className="fixed top-0 w-full z-[999] bg-white border-b border-gray-100 shadow-sm font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          
-          //logo
           <div className="flex-shrink-0 cursor-pointer">
             <Link to="/" className="flex items-center gap-2 group">
               <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105">

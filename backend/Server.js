@@ -10,15 +10,9 @@ const cartRoutes = require("./routes/cart.routes");
 const checkoutRoutes = require("./routes/checkout.routes");
 const orderRoutes = require("./routes/order.routes");
 const wishlistRoutes = require("./routes/wishlist.routers");
-<<<<<<< HEAD
-const paymentRoutes = require("./routes/payment.routes");
 const adminRoutes = require("./routes/admin.routes");
-const adminDashboard = require("./routes/adminDashboard.routes");
-=======
 const paymentRoutes = require("./routes/payment.routes")
-const adminRoutes = require("./routes/admin.routes");
 const adminDashboard = require("./routes/adminDashboard.routes")
->>>>>>> 5df3121dc98efa3efa427cbf5b9c74e093008cc5
 const adminProductRoutes = require("./routes/adminProduct.routes");
 const adminOrderRoutes = require("./routes/adminOrder.routes");
 
@@ -28,7 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5176",
     credentials: true,
   }),
 );
@@ -51,15 +45,10 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/checkout", checkoutRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/wishlist", wishlistRoutes);
-<<<<<<< HEAD
+
 app.use("/api/payment", paymentRoutes);
 // Admin
-app.use("/api/admin/dashboard", adminDashboard);
-=======
-app.use("/api/payment", paymentRoutes)
-// Admin
 app.use("/api/admin/dashboard", adminDashboard )
->>>>>>> 5df3121dc98efa3efa427cbf5b9c74e093008cc5
 app.use("/api/admin/users", adminRoutes);
 app.use("/api/admin/products", adminProductRoutes);
 app.use("/api/admin/orders", adminOrderRoutes);
