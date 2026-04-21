@@ -1,6 +1,7 @@
 const Product = require("../models/product.model");
 
 // GET ALL PRODUCTS
+<<<<<<< HEAD
 // exports.getProducts = async (req, res) => {
 //   try {
 //     const products = await Product.find().sort({ createdAt: -1 });
@@ -36,6 +37,18 @@ exports.getProducts = async (req, res) => {
   }
 };
 
+=======
+exports.getProducts = async (req, res) => {
+  try {
+    const products = await Product.find().sort({ createdAt: -1 });
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+>>>>>>> 5df3121dc98efa3efa427cbf5b9c74e093008cc5
 // CREATE PRODUCT
 exports.createProduct = async (req, res) => {
   try {

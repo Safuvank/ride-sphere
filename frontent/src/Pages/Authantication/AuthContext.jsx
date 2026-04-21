@@ -38,6 +38,22 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
+<<<<<<< HEAD:frontent/src/Pages/Authantication/AuthContext.jsx
+=======
+  // useEffect(() => {
+  //   const tryRefresh = async () => {
+  //     try {
+  //       const { data } = await api.post("/auth/refresh");
+  //       localStorage.setItem("accessToken", data.accessToken);
+  //     } catch {
+  //       localStorage.removeItem("auth");
+  //       localStorage.removeItem("accessToken");
+  //     }
+  //   };
+
+  //   tryRefresh();
+  // }, []);
+>>>>>>> 5df3121dc98efa3efa427cbf5b9c74e093008cc5:e-commerce/src/Pages/Authantication/AuthContext.jsx
 
   const logout = async () => {
     try {

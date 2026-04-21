@@ -34,6 +34,10 @@ router.put("/:id", protect, admin, editUser);
 
 router.delete("/:id", protect, admin, deleteUser);
 
+<<<<<<< HEAD
 router.put("/block/:id", protect, admin, toggleBlockUser)
+=======
+
+>>>>>>> 5df3121dc98efa3efa427cbf5b9c74e093008cc5
 
 module.exports = router;
