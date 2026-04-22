@@ -24,8 +24,8 @@ exports.createOrder = async (req, res) => {
       totalPrice,
     });
 
-    console.log("REQ.USER:", req.user);
-    console.log("REQ.BODY:", req.body);
+    // console.log("REQ.USER:", req.user);
+    // console.log("REQ.BODY:", req.body);
 
     const createdOrder = await order.save();
     await Cart.findOneAndUpdate(
@@ -34,7 +34,7 @@ exports.createOrder = async (req, res) => {
     )
     res.status(201).json(createdOrder);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ message: "Order creation failed" });
   }
 }
@@ -47,7 +47,7 @@ exports.getMyOrders = async (req, res) => {
     }); // sort by most recent orders
     res.json(orders);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 }
@@ -76,7 +76,7 @@ exports.getOrderById = async (req, res) => {
     // Rutrun the full order details
     res.json(order);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ message: "Server Error" });
   }
 }

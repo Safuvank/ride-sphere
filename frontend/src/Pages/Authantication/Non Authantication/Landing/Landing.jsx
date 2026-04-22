@@ -72,9 +72,9 @@ export default function HeroSlider() {
   ];
 
   return (
-    <div className="w-full bg-white font-sans">
+    <div className="w-full bg-white font-sans ">
       {/* ===== HERO SLIDER ===== */}
-      <div className="h-[80vh] md:h-[90vh] relative group pt-16">
+      <div className="h-[85vh] md:h-[100vh] relative group pt-16 ">
         <Swiper
           modules={[Autoplay, Pagination, Navigation]}
           autoplay={{ delay: 4000, disableOnInteraction: false }}

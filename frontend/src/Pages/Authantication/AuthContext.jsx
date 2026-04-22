@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
         setUser(parsedUser);
       }
     } catch (error) {
-      console.error("Invalid auth data. Clearing storage...");
+      // console.error("Invalid auth data. Clearing storage...");
       localStorage.removeItem("user");
     }
 
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
     localStorage.setItem("user", JSON.stringify(userData));
     const temp = localStorage.getItem("user")
-    console.log("this is temp",temp)
+    // console.log("this is temp",temp)
     setUser(userData);
     
   };
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await api.post("/auth/logout");
     } catch (error) {
-      console.error("Logout request failed:", error);
+      // console.error("Logout request failed:", error);
     } finally {
       localStorage.removeItem("auth");
       localStorage.removeItem("accessToken");

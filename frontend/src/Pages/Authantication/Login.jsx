@@ -1,5 +1,3 @@
-
-
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/api.js";
@@ -28,7 +26,7 @@ export default function Login() {
     try {
       const { data } = await api.post("/auth/login", { email, password });
 
-      console.log("Full login response:", data);
+      // console.log("Full login response:", data);
 
       const userData = data.user;
 
@@ -40,9 +38,9 @@ export default function Login() {
       } else {
         navigate("/");
       }
-      console.log("Login userData:", userData);
+      // console.log("Login userData:", userData);
     } catch (err) {
-      console.error("Login error:", err);
+      // console.error("Login error:", err);
       setError(err.response?.data?.message || "Login failed");
     }
   };
@@ -121,3 +119,5 @@ export default function Login() {
     </div>
   );
 }
+
+

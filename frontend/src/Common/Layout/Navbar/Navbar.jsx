@@ -14,7 +14,7 @@ export default function Navbar() {
 
   const { user, logout } = useContext(AuthContext);
 
-  console.log("Navbar user:", user);
+  // console.log("Navbar user:", user);
 
   const handleLogout = () => {
     logout();

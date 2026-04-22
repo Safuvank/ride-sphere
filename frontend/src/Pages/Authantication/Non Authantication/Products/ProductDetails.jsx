@@ -55,28 +55,34 @@ export default function ProductDetails() {
   }
 
   // Find this product in the cart (only after product is loaded)
-  const cartItem = cart.find((item) => item.productId?._id === product._id);
+  // const cartItem = cart.find((item) => item.productId?._id === product._id);
+  const cartItem = cart?.find((item) => item.productId?._id === product._id);
 
   const cartQuantity = cartItem ? cartItem.quantity : 0;
   const inCart = !!cartItem;
 
+  
+  
   const handleAddToCart = async () => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
+  if (!user) {
+    console.log("User not logged in");
+    navigate("/login");
+    return;
+  }
 
-    try {
-      const res = await api.post("/cart", {
-        productId: product._id,
-        quantity: 1,
-      });
+  try {
+    const res = await api.post("/cart", {
+      productId: product._id,
+      quantity: 1,
+    });
 
-      dispatch({ type: "SetCart", payload: res.data.products });
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-    }
-  };
+   
+
+    dispatch({ type: "SetCart", payload: res.data });
+  } catch (error) {
+    // console.error("Error:", error);
+  }
+};
 
   const handleIncrease = async () => {
     try {
@@ -87,9 +93,9 @@ export default function ProductDetails() {
         quantity: newQuantity,
       });
 
-      dispatch({ type: "SetCart", payload: res.data.products });
+      dispatch({ type: "SetCart", payload: res.data });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
@@ -102,17 +108,17 @@ export default function ProductDetails() {
           data: { productId: product._id },
         });
 
-        dispatch({ type: "SetCart", payload: res.data.products });
+        dispatch({ type: "SetCart", payload: res.data });
       } else {
         const res = await api.put("/cart", {
           productId: product._id,
           quantity: newQuantity,
         });
 
-        dispatch({ type: "SetCart", payload: res.data.products });
+        dispatch({ type: "SetCart", payload: res.data });
       }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 

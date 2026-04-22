@@ -59,7 +59,7 @@ export default function Payment() {
       dispatch({ type: "ClearCart" });
       navigate("/ordersuccess", { state: { success: true } });
     } catch (error) {
-      console.error("Order failed:", error.response?.data || error.message);
+      // console.error("Order failed:", error.response?.data || error.message);
       alert("Order failed");
     }
   };

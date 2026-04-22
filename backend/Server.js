@@ -16,20 +16,18 @@ const adminDashboard = require("./routes/adminDashboard.routes")
 const adminProductRoutes = require("./routes/adminProduct.routes");
 const adminOrderRoutes = require("./routes/adminOrder.routes");
 
+dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5176",
+    origin: process.env.FRONTEND,
     credentials: true,
   }),
 );
 
-dotenv.config();
-
-const PORT = process.env.PORT || 3000;
 
 connectDB();
 
@@ -53,6 +51,4 @@ app.use("/api/admin/users", adminRoutes);
 app.use("/api/admin/products", adminProductRoutes);
 app.use("/api/admin/orders", adminOrderRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server is runnning on http://localhost:${PORT}`);
-});
+app.listen(process.env.PORT);

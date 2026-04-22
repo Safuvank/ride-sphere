@@ -67,12 +67,12 @@ export default function Product() {
         }
 
         const { data } = response;
-        console.log("API response:", data);
+        // console.log("API response:", data);
 
         setProducts(Array.isArray(data.products) ? data.products : []);
         setTotalPages(data.totalPages || 1);
       } catch (err) {
-        console.error("Error fetching products:", err);
+        // console.error("Error fetching products:", err);
         setError(
           err.message || "Failed to load products. Please check your connection."
         );
@@ -102,7 +102,7 @@ export default function Product() {
 
       dispatch({ type: "SetCart", payload: res.data });
     } catch (error) {
-      console.error("Error adding to cart", error);
+      // console.error("Error adding to cart", error);
     }
   };
 
@@ -122,7 +122,7 @@ export default function Product() {
         payload: res.data.products.map((item) => item.product),
       });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 

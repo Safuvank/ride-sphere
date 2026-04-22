@@ -6,15 +6,18 @@ class APIFeatures {
 
   // Search
   search() {
-    if(this.queryString.search){
-      const keyword = this.queryString.search;
+  if (this.queryString.search) {
+    const keyword = this.queryString.search;
 
-      this.query = this.query.find({
-        $text: {$search: keyword}
-      })
-    }
-    return this
+    this.query = this.query.find({
+      name: {
+        $regex: keyword,
+        $options: "i", // case-insensitive
+      },
+    });
   }
+  return this;
+}
 
   // Category filter
   filter() {

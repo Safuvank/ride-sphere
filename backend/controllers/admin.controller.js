@@ -33,7 +33,7 @@ exports.getUsers = async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ message: "Server Error" });
   }
 };
@@ -57,7 +57,7 @@ exports.addUser = async (req, res) => {
 
     res.status(201).json({ message: "user created successfully", user });
   } catch (error) {
-    console.log(error);
+   
     res.status(500).json({ message: "Server Error" });
   }
 }
@@ -76,7 +76,7 @@ exports.editUser = async (req, res) => {
     
     res.json({ message: "User updated successfully", user: updatedUser });
   } catch (error) {
-    console.log(error);
+    
     res.status(500).json({ message: "Server Error" });
   }
 }
@@ -92,7 +92,6 @@ exports.deleteUser = async(req,res)=>{
   }
     
   }catch(err){
-    console.log(err)
     res.status(500).json({message: "Server error"})
   }
 }
@@ -114,7 +113,7 @@ exports.toggleBlockUser = async (req,res)=>{
     res.json(updatedUser)
 
   }catch(err){
-    console.log(err)
+    
     res.status(500).json({message:"Server error"})
   }
 }

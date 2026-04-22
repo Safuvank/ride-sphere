@@ -29,7 +29,7 @@ exports.register = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+  
     res.status(500).json({ message: "server error" });
   }
 };
@@ -83,7 +83,7 @@ exports.login = async (req, res) => {
       });
       
   } catch (err) {
-    console.error(err);
+    
     res.status(500).json({ message: "server error" });
   }
 };
@@ -110,7 +110,7 @@ exports.logout = async (req, res) => {
 
 exports.refreshToken = async (req, res) => {
   try {
-    console.log("Cookies:", req.cookies);
+    
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken)
       return res.status(401).json({ message: "No refresh token" });
@@ -127,7 +127,7 @@ exports.refreshToken = async (req, res) => {
     const accessToken = generateAccessToken(user);
     res.json({ accessToken });
   } catch (error) {
-    console.error("RefreshToken Error:", error);
+  
     res.status(403).json({ message: "Invalid refresh token" });
   }
 };

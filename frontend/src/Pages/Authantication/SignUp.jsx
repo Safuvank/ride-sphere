@@ -55,7 +55,7 @@ export default function SignUp() {
 
       navigate("/login");
     } catch (err) {
-      console.error("Signup error:", err);
+      // console.error("Signup error:", err);
       setError(err.response?.data?.message || "Signup failed");
     } finally {
       setLoading(false);
@@ -154,3 +154,5 @@ export default function SignUp() {
     </div>
   );
 }
+
+

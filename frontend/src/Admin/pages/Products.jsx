@@ -23,7 +23,7 @@ export default function Products() {
       setProducts(res.data.products);
       setPages(res.data.pages);
     } catch (error) {
-      console.error("Error fetching products:", error);
+      // console.error("Error fetching products:", error);
     }
   };
 
@@ -64,7 +64,7 @@ export default function Products() {
         images: "",
       });
     } catch (error) {
-      console.error("Error adding product:", error);
+      // console.error("Error adding product:", error);
     }
   };
 
@@ -80,7 +80,7 @@ export default function Products() {
       await api.delete(`admin/products/${id}`);
       fetchProducts();
     } catch (error) {
-      console.error("Error deleting product:", error);
+      // console.error("Error deleting product:", error);
       alert("Failed to delete product. Please try again.");
     }
   };
@@ -102,7 +102,7 @@ export default function Products() {
       fetchProducts();
       setEditItem(null);
     } catch (error) {
-      console.error("Error updating product:", error);
+      // console.error("Error updating product:", error);
     }
   };
 

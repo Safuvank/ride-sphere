@@ -23,27 +23,59 @@ export default function Wishlist() {
         payload: wishlist.filter((item) => item._id !== productId),
       });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
+
+  // const handleAddToCart = async (product) => {
+  //   try {
+  //     await api.post("/cart", {
+  //       productId: product._id,
+  //       quantity: 1,
+  //     });
+
+  //     dispatch({
+  //     type: "SetCart",
+  //     payload: res.data,
+  //   });
+
+  //     await api.delete(`/wishlist/${product._id}`);
+
+  //     dispatch({
+  //       type: "SetWishlist",
+  //       payload: wishlist.filter((item) => item._id !== product._id),
+  //     });
+  //   } catch (error) {
+  //     // console.error(error);
+  //   }
+  // };
+
 
   const handleAddToCart = async (product) => {
-    try {
-      await api.post("/cart", {
-        productId: product._id,
-        quantity: 1,
-      });
+  try {
+    const res = await api.post("/cart", {
+      productId: product._id,
+      quantity: 1,
+    });
 
-      await api.delete(`/wishlist/${product._id}`);
+    // ✅ IMPORTANT: update cart state
+    dispatch({
+      type: "SetCart",
+      payload: res.data,
+    });
 
-      dispatch({
-        type: "SetWishlist",
-        payload: wishlist.filter((item) => item._id !== product._id),
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    // remove from wishlist
+    await api.delete(`/wishlist/${product._id}`);
+
+    dispatch({
+      type: "SetWishlist",
+      payload: wishlist.filter((item) => item._id !== product._id),
+    });
+
+  } catch (error) {
+    // console.error(error);
+  }
+};
 
   // Not Logged In State
   if (!user) {

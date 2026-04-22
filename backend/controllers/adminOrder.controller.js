@@ -7,7 +7,7 @@ exports.getOrders = async (req, res) => {
       .sort({ createdAt: -1 });
     res.json(orders);
   } catch (error) {
-    console.error(error);
+    
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -28,7 +28,6 @@ exports.updateOrderStatus = async (req, res) => {
       res.status(404).json({ message: "order not found" });
     }
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -43,7 +42,6 @@ exports.deleteOrder = async (req, res) => {
       res.status(404).json({ message: "order not found" });
     }
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };

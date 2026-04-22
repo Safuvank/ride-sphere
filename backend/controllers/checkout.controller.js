@@ -36,10 +36,10 @@ exports.createCheckout = async (req, res) => {
       paymentStatus: "Pending",
       isPaid: false,
     });
-    console.log(`Checkout created for user: ${req.user._id}`);
+    // console.log(`Checkout created for user: ${req.user._id}`);
     res.status(201).json(newCheckout);
   } catch (error) {
-    console.error("Error Creating checkout session:", error);
+    // console.error("Error Creating checkout session:", error);
     res.status(500).json({ message: "Server Error" });
   }
 };
@@ -66,7 +66,7 @@ exports.markCheckoutAsPaid = async (req, res) => {
       res.status(400).json({ message: "Invalid Payment Status" });
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ message: "server error" });
   }
 }
@@ -105,7 +105,7 @@ exports.finalizeCheckout = async (req, res) => {
       res.status(400).json({ message: "checkout is not paid" });
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ message: "server error" });
   }
 }

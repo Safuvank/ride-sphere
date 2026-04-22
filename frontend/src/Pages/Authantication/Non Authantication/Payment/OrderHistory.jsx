@@ -13,7 +13,7 @@ export default function OrderHistory() {
       const res = await api.get("/orders/my-orders");
       setOrders(res.data);
     } catch (err) {
-      console.error("Error fetching order history:", err);
+      // console.error("Error fetching order history:", err);
     } finally {
       setLoading(false);
     }

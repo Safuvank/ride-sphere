@@ -19,7 +19,7 @@ const initialState = {
   totalItems: 0,
 };
 
-console.log("initialState", initialState);
+// console.log("initialState", initialState);
 
 export const ProviderComp = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -54,7 +54,7 @@ export const ProviderComp = ({ children }) => {
         });
         setLoadingCart(false);
       } catch (error) {
-        console.error("Error loading user data:", error);
+        // console.error("Error loading user data:", error);
       }
     };
 

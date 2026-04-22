@@ -191,7 +191,7 @@ export default function Users() {
       setUsers(res.data.users);
       setPages(res.data.pages);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      // console.error("Error fetching users:", error);
     }
   };
 
@@ -204,7 +204,7 @@ export default function Users() {
       const res = await api.put(`/admin/users/block/${user._id}`);
       setUsers(users.map((u) => (u._id === user._id ? res.data : u)));
     } catch (error) {
-      console.error("Error updating user:", error);
+      // console.error("Error updating user:", error);
     }
   };
 

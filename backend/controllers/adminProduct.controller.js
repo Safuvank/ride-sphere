@@ -1,16 +1,5 @@
 const Product = require("../models/product.model");
 
-// GET ALL PRODUCTS
-
-// exports.getProducts = async (req, res) => {
-//   try {
-//     const products = await Product.find().sort({ createdAt: -1 });
-//     res.status(200).json(products);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Server error" });
-//   }
-// };
 
 exports.getProducts = async (req, res) => {
   try {
@@ -32,7 +21,6 @@ exports.getProducts = async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -43,7 +31,7 @@ exports.getProducts = async (req, res) => {
     const products = await Product.find().sort({ createdAt: -1 });
     res.status(200).json(products);
   } catch (error) {
-    console.error(error);
+    
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -70,7 +58,7 @@ exports.createProduct = async (req, res) => {
 
     res.status(201).json(savedProduct);
   } catch (error) {
-    console.error(error);
+  
     res.status(500).json({ message: "Error creating product" });
   }
 };
@@ -90,7 +78,7 @@ exports.updateProduct = async (req, res) => {
 
     res.json(updated);
   } catch (error) {
-    console.error(error);
+   
     res.status(500).json({ message: "Error updating product" });
   }
 };
@@ -108,7 +96,7 @@ exports.deleteProduct = async (req, res) => {
 
     res.json({ message: "Product deleted successfully" });
   } catch (error) {
-    console.error(error);
+    
     res.status(500).json({ message: "Error deleting product" });
   }
 };

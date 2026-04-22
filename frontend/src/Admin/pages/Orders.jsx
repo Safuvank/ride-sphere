@@ -355,10 +355,10 @@ export default function Orders() {
   const fetchOrders = async () => {
     try {
       const res = await api.get("/admin/orders");
-      console.log("Orders from API:", res.data);
+      // console.log("Orders from API:", res.data);
       setOrders(res.data);
     } catch (err) {
-      console.error("Error fetching orders:", err);
+      // console.error("Error fetching orders:", err);
     } finally {
       setLoading(false);
     }
@@ -382,7 +382,7 @@ export default function Orders() {
         )
       );
     } catch (err) {
-      console.error("Error updating order status:", err);
+      // console.error("Error updating order status:", err);
     } finally {
       setUpdating(false);
     }

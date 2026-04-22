@@ -312,8 +312,8 @@ export default function Cart() {
     loadingCart,
   } = useContext(cartContext);
 
-  console.log("usecontext", useContext(cartContext));
-  console.log(cart);
+  // console.log("usecontext", useContext(cartContext));
+  // console.log(cart);
 
   const { user } = useContext(AuthContext);
 
@@ -330,9 +330,9 @@ export default function Cart() {
       });
 
       dispatch({ type: "SetCart", payload: res.data });
-      console.log(res.data);
+      // console.log(res.data);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
@@ -362,7 +362,7 @@ export default function Cart() {
 
       dispatch({ type: "SetCart", payload: res.data });
     } catch (error) {
-      console.error("Error decreasing quantity", error.response?.data);
+      // console.error("Error decreasing quantity", error.response?.data);
     }
   };
 
@@ -374,16 +374,16 @@ export default function Cart() {
         });
         dispatch({ type: "SetCart", payload: res.data });
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     }
   };
 
-  console.log({
-    cart,
-    totalItems,
-    totalPrice,
-  });
+  // console.log({
+  //   cart,
+  //   totalItems,
+  //   totalPrice,
+  // });
 
   // Not Logged In State
   if (!user) {
