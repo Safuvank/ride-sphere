@@ -52,3 +52,5 @@ app.use("/api/admin/products", adminProductRoutes);
 app.use("/api/admin/orders", adminOrderRoutes);
 
 app.listen(process.env.PORT);
+
+module.exports = app;
