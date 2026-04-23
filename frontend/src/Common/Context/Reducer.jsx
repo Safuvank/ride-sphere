@@ -19,6 +19,8 @@ export default function reducer(state, action) {
         ...state,
         orders: [...state.orders, action.payload],
         cart: [],
+        totalPrice: 0,     // ✅ FIX
+    totalItems: 0,
       };
 
     default:
