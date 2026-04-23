@@ -21,11 +21,32 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+// app.use(
+//   cors({
+//     origin: process.env.FRONTEND,
+//     credentials: true,
+//   }),
+// );
+
+
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://ride-sphere-2w8n.vercel.app",
+  "https://ride-sphere-7xsz.vercel.app"
+];
+
 app.use(
   cors({
-    origin: process.env.FRONTEND,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
     credentials: true,
-  }),
+  })
 );
 
 
