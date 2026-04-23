@@ -28,8 +28,14 @@ app.use(
   }),
 );
 
-
-connectDB();
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    res.status(500).json({ message: "Database connection failed" });
+  }
+});
 
 app.get("/", (req, res) => {
   res.send("Welcome to ridesphere");
@@ -51,6 +57,6 @@ app.use("/api/admin/users", adminRoutes);
 app.use("/api/admin/products", adminProductRoutes);
 app.use("/api/admin/orders", adminOrderRoutes);
 
-app.listen(process.env.PORT);
+// app.listen(process.env.PORT);
 
-module.exports = app;
+modules.export = app;
