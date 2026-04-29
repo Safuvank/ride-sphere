@@ -20,10 +20,13 @@ export default function Products() {
   const fetchProducts = async () => {
     try {
       const res = await api.get(`/admin/products?page=${page}`);
-      setProducts(res.data.products);
-      setPages(res.data.pages);
+      console.log("API DATA:", res.data);
+
+      setProducts(res.data || []);
+      setPages(res.data.pages || 1);
     } catch (error) {
-      // console.error("Error fetching products:", error);
+      console.error(error);
+      setProducts([]);
     }
   };
 
@@ -72,7 +75,7 @@ export default function Products() {
   const handleDelete = async (id) => {
     try {
       const confirmDelete = window.confirm(
-        "Are you sure you want to delete this product?"
+        "Are you sure you want to delete this product?",
       );
 
       if (!confirmDelete) return;
@@ -177,13 +180,19 @@ export default function Products() {
             <tbody className="divide-y divide-gray-100">
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="px-6 py-12 text-center text-gray-500 font-medium">
+                  <td
+                    colSpan="8"
+                    className="px-6 py-12 text-center text-gray-500 font-medium"
+                  >
                     No products found in inventory.
                   </td>
                 </tr>
               ) : (
                 products.map((p) => (
-                  <tr key={p._id} className="hover:bg-gray-50 transition-colors">
+                  <tr
+                    key={p._id}
+                    className="hover:bg-gray-50 transition-colors"
+                  >
                     {/* Image */}
                     <td className="px-6 py-3">
                       <div className="w-12 h-12 bg-white border border-gray-100 rounded-md p-1 flex items-center justify-center">
@@ -220,12 +229,18 @@ export default function Products() {
                           type="text"
                           value={editItem.description}
                           onChange={(e) =>
-                            setEditItem({ ...editItem, description: e.target.value })
+                            setEditItem({
+                              ...editItem,
+                              description: e.target.value,
+                            })
                           }
                           className="bg-white border border-blue-500 rounded px-2 py-1 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                         />
                       ) : (
-                        <div className="max-w-[200px] truncate" title={p.description}>
+                        <div
+                          className="max-w-[200px] truncate"
+                          title={p.description}
+                        >
                           {p.description}
                         </div>
                       )}
@@ -238,7 +253,10 @@ export default function Products() {
                           type="text"
                           value={editItem.category}
                           onChange={(e) =>
-                            setEditItem({ ...editItem, category: e.target.value })
+                            setEditItem({
+                              ...editItem,
+                              category: e.target.value,
+                            })
                           }
                           className="bg-white border border-blue-500 rounded px-2 py-1 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                         />
@@ -286,7 +304,10 @@ export default function Products() {
                           type="number"
                           value={editItem.countInStock}
                           onChange={(e) =>
-                            setEditItem({ ...editItem, countInStock: e.target.value })
+                            setEditItem({
+                              ...editItem,
+                              countInStock: e.target.value,
+                            })
                           }
                           className="bg-white border border-blue-500 rounded px-2 py-1 w-20 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
                         />
