@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect, useState } from "react";
 import api from "../../api/api";
 import { FaBan, FaCheck, FaUserSlash, FaSearch } from "react-icons/fa";
