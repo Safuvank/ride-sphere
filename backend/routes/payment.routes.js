@@ -21,10 +21,18 @@
 const express = require("express");
 const router = express.Router();
 
-const { createOrder } = require("../controllers/payment.controller");
-const { verifyPayment } = require("../utils/verifyPayment");
+// const { createOrder } = require("../controllers/payment.controller");
+// const { verifyPayment } = require("../utils/verifyPayment");
+// const {createOrder, verifyPayment} = require("../controllers/payment.controller");
 
-router.post("/create-order", createOrder);
-router.post("/verify", verifyPayment);
+
+// router.post("/create-order", createOrder);
+// router.post("/verify", verifyPayment);
+
+const { createOrder, verifyPayment } = require("../controllers/payment.controller");
+const { protect } = require("../middleware/authmiddleware");
+
+router.post("/create-order", protect, createOrder);
+router.post("/verify", protect, verifyPayment);
 
 module.exports = router;

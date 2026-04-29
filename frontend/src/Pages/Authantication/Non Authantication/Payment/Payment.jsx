@@ -34,35 +34,113 @@ export default function Payment() {
     0
   );
 
-  const handlePlaceOrder = async () => {
-    if (!address.trim()) return alert("Enter address");
+  // const handlePlaceOrder = async () => {
+  //   if (!address.trim()) return alert("Enter address");
 
-    try {
-      const { data } = await api.post("/orders", {
-        orderItems: cart.map((item) => ({
-          productId: item.productId._id,
-          name: item.productId.name,
-          image: item.productId.images[0]?.url,
-          quantity: item.quantity,
-          price: item.productId.price,
-        })),
-        shippingAddress: {
-          address,
-          city: "Your City",
-          postalCode: "673001",
-          country: "India",
-        },
-        paymentMethod,
-        totalPrice: total,
-      });
+  //   try {
+  //     const { data } = await api.post("/orders", {
+  //       orderItems: cart.map((item) => ({
+  //         productId: item.productId._id,
+  //         name: item.productId.name,
+  //         image: item.productId.images[0]?.url,
+  //         quantity: item.quantity,
+  //         price: item.productId.price,
+  //       })),
+  //       shippingAddress: {
+  //         address,
+  //         city: "Your City",
+  //         postalCode: "673001",
+  //         country: "India",
+  //       },
+  //       paymentMethod,
+  //       totalPrice: total,
+  //     });
 
-      dispatch({ type: "ClearCart" });
-      navigate("/ordersuccess", { state: { success: true } });
-    } catch (error) {
-      // console.error("Order failed:", error.response?.data || error.message);
-      alert("Order failed");
+  //     dispatch({ type: "ClearCart" });
+  //     navigate("/ordersuccess", { state: { success: true } });
+  //   } catch (error) {
+  //     // console.error("Order failed:", error.response?.data || error.message);
+  //     alert("Order failed");
+  //   }
+  // };
+
+
+const handlePlaceOrder = async () => {
+  if (!address.trim()) return alert("Enter address");
+
+  try {
+    // 💰 If COD → normal flow
+    if (paymentMethod === "cod") {
+      await placeOrder();
+      return;
     }
-  };
+
+    // 💳 Step 1: Create Razorpay order
+    const { data } = await api.post("/payment/create-order", {
+      amount: total,
+    });
+
+    // 💳 Step 2: Open Razorpay popup
+    const options = {
+      key: "rzp_test_SJr8psddTz1yjJ",
+      amount: data.amount,
+      currency: "INR",
+      order_id: data.id,
+
+      handler: async function (response) {
+        // ✅ Step 3: Verify payment
+        await api.post("/payment/verify", response);
+
+        // ✅ Step 4: Place order AFTER payment
+        await placeOrder();
+      },
+    };
+
+    const razor = new window.Razorpay(options);
+    razor.open();
+
+  } catch (error) {
+    alert("Payment failed");
+  }
+};
+
+
+
+const placeOrder = async () => {
+  const { data } = await api.post("/orders", {
+    orderItems: cart.map((item) => ({
+      productId: item.productId._id,
+      name: item.productId.name,
+      image: item.productId.images[0]?.url,
+      quantity: item.quantity,
+      price: item.productId.price,
+    })),
+    shippingAddress: {
+      address,
+      city: "Your City",
+      postalCode: "673001",
+      country: "India",
+    },
+    paymentMethod,
+    totalPrice: total,
+  });
+
+  dispatch({ type: "ClearCart" });
+  navigate("/ordersuccess", { state: { success: true } });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="pt-24 pb-20 min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8 font-sans">
