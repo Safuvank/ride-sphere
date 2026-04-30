@@ -20,7 +20,7 @@ export default function Products() {
   const fetchProducts = async () => {
     try {
       const res = await api.get(`/admin/products?page=${page}`);
-      console.log("API DATA:", res.data);
+      // console.log("API DATA:", res.data);
 
       setProducts(res.data || []);
       setPages(res.data.pages || 1);

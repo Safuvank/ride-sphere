@@ -42,7 +42,7 @@ export default function Dashboard() {
       setOrderTimeline(res.data.orderTimeline);
       setRevenueTimeline(res.data.revenueTimeline);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
 
