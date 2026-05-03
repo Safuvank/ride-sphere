@@ -19,7 +19,6 @@ const initialState = {
   totalItems: 0,
 };
 
-// console.log("initialState", initialState);
 
 export const ProviderComp = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -57,7 +56,6 @@ export const ProviderComp = ({ children }) => {
         // console.error("Error loading user data:", error);
       }
     };
-
     loadUserData();
   }, [user]);
 

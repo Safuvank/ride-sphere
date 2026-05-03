@@ -4,7 +4,7 @@ const api = axios.create({
   baseURL:  import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
 });
-.log("BASE URL:", import.meta.env.VITE_BACKEND_URL);
+
 
 // Request interceptor to attach token
 api.interceptors.request.use((config) => {
